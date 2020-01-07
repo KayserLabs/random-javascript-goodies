@@ -1,0 +1,116 @@
+<html>
+<head></head>
+<body>
+    <h2>Comma seperated list</h2>
+    <p></p>
+    <div class="split-grid">
+        <fieldset>
+            <legend>Seperator</legend>
+            <input type="radio" name="seperator" value="newLine" checked="checked"> New Line<br>
+            <input type="radio" name="seperator" value=";"> Semi-colon ;<br>
+            <input type="radio" name="seperator" value="_"> Underscore _
+    
+        </fieldset>
+        <fieldset>
+            <legend>Surround with</legend>
+            <input type="radio" name="surroundWith" value="Nothing" checked="checked"> Nothing<br>
+            <input type="radio" name="surroundWith" value="'"> 'Single Quote'<br>
+            <input type="radio" name="surroundWith" value="&quot;"> "Double Quote"
+    
+        </fieldset>
+
+    </div>
+
+    <div class="split-grid">
+    <div>
+        <h3>Enter your list</h3>
+        <textarea name="ListToCommaList" id="ListToCommaList" cols="30" rows="10">
+            554563
+            554568
+            554578
+            554572
+            554567
+            554562
+            554580
+            554584
+            554832
+            554844
+            554838
+            554819
+            554581
+            554850
+            554846
+            554849
+            554585
+            554564
+            554569
+            554575
+            554828
+            554573
+            554816
+            554848
+        </textarea>
+    </div>
+    <div>
+        <h3>Results</h3>
+        <textarea Id="ListToCommaListResults" readonly rows="10"></textarea>
+    </div>
+            
+</div>
+
+
+    <hr />
+
+</body>
+<script>
+function listToCommaListString(stringList, seperator, joinWith, surroundWith) {
+    if(seperator === 'newLine') {
+        seperator = '\n';
+    }
+
+    if(surroundWith === 'Nothing') {
+        surroundWith = '';
+    }
+    var splitAndTrim = stringList
+                        .split(seperator)
+                        .map(s => `${surroundWith}${s.trim()}${surroundWith}`)
+    var redoArray = splitAndTrim.join(joinWith);
+    var reduceToSingleString = redoArray;
+    
+    return `${reduceToSingleString}`;
+}
+
+function initializeListToCommaListEvent(event) {
+    if (event.isComposing || event.keyCode === 229) {
+            return;
+        }
+
+        var listToCommaListResults = document.getElementById('ListToCommaListResults');
+        var selectedSeperator = document.querySelector('input[name="seperator"]:checked').value;
+        var surroundWith = document.querySelector('input[name="surroundWith"]:checked').value;
+
+        listToCommaListResults.value = listToCommaListString(event.srcElement.value, selectedSeperator, ',', surroundWith);
+}
+
+(function() {
+    var listToCommaList = document.getElementById('ListToCommaList');
+
+    listToCommaList.addEventListener('keyup', initializeListToCommaListEvent);
+})();
+
+</script>
+
+<style>
+.split-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.split-grid > div > textarea {
+    width: 100%;
+}
+
+
+</style>
+
+</html>
